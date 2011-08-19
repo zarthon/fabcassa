@@ -19,6 +19,7 @@ CONNECTION = 'cass01:9160'
 KEYSPACE = None
 USERS = None
 USERNAME = None
+
 LOGED_USER = None
 #Column def for each column family
 

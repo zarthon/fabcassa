@@ -47,4 +47,8 @@ CREATE TABLE Comments (
     * create keyspace fabcassa;  
     * create column family Users with comparator=UTF8Type and default_validation_class=UTF8Type;  
     * create column family Username with comparator=UTF8Type and default_validation_class=UTF8Type;
+    * create column family UserProfile with comparator=UTF8Type and default_validation_class=UTF8Type;
+    * create column family Friends with comparator=UTF8Type and default_validation_class=UTF8Type;
+    * create column family WallPosts with comparator=UTF8Type and default_validation_class=UTF8Type;
+
 * Added functionality to inser new users and exit if user is already present
