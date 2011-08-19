@@ -51,7 +51,7 @@ def insert_new(usern=None,passw=None):
 #Check if username already present
         try:
             if USERNAME.get(username):
-                print "Username already exists\n"
+                print "Username",username,"already exists\n"
                 return 
         except:
             pass
@@ -61,7 +61,7 @@ def insert_new(usern=None,passw=None):
             password2 = passw
         else:
             password = getpass.getpass("Enter new password: ")
-           password2 = getpass.getpass("Re-Enter new password: ")
+            password2 = getpass.getpass("Re-Enter new password: ")
            
         if password != password2:
             print "Passwords dont match\n"
