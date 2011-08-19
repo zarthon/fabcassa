@@ -26,17 +26,18 @@ LOGED_USER = None
 #Column def for each column family
 
 COL_USERS = ['id', 'username', 'password']
-COL_USERNA = ['id']
+COL_USERNA = ['id','friend_list']
 COL_USP = ['first_name', 'last_name', 'age', 'relation']
-
+COL_FRND = ['user_id', 'friend_id']
 #Initialise Connections
 def init():
-    global KEYSPACE, USERS, USERNAME, USERPROFILE
+    global KEYSPACE, USERS, USERNAME, USERPROFILE, FRIENDS
     try:
         KEYSPACE = pycassa.connect( 'fabcassa', [CONNECTION] )
         USERS = pycassa.ColumnFamily( KEYSPACE,'Users' )
         USERNAME = pycassa.ColumnFamily( KEYSPACE, 'Username' )
         USERPROFILE = pycassa.ColumnFamily( KEYSPACE, 'UserProfile' )
+        FRIENDS = pycassa.ColumnFamily( KEYSPACE, 'Friends')
     except:
         print sys.exc_info()
         sys.exit()
@@ -130,18 +131,40 @@ def viewProfile():
         user_prof = USERPROFILE.get(LOGED_USER['id'])
         print user_prof
 
+def addFriends(frnd_user=None):
+    global LOGED_USER
+    if LOGED_USER is None:
+        print "User is not Logged in !!"
+        authenticate()
+    else:
+        try:
+            if frnd_user is None:
+                frnd_user = str(raw_input("Enter Friend Username: "))
+                frnd = USERNAME.get(frnd_user)
+                if frnd is not None:
+                    user_info = LOGED_USER
+                    userna = USERNAME.get(user_info['username'])
+
+
+        except:
+            print sys.exc_info()
+            print "User doesn't exist"
+            return
+
 def main():
     print "Welcome to Sample facassa!!!\n"
-    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)Exit the APP"
+    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Exit the APP"
     option = int(raw_input("Please select an Option:"))
-    while option != 4:
+    while option != 5:
         if option == 1:
             insert_new()
         elif option == 2:
             authenticate()
         elif option == 3:
-            viewProfile()
-        print "1)Register New User\n2)Log In\n3)Modify User Profile\n3)Exit the APP"
+            modifyUserProfile()
+        elif option == 4:
+            addFriends()
+        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Exit the APP"
         option = int(raw_input("Please select an Option:"))
 
 if __name__ == "__main__":
