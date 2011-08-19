@@ -19,20 +19,24 @@ CONNECTION = 'cass01:9160'
 KEYSPACE = None
 USERS = None
 USERNAME = None
-
+FRIENDS = None
+COMMENTS = None
+USERPROFILE = None
 LOGED_USER = None
 #Column def for each column family
 
 COL_USERS = ['id', 'username', 'password']
 COL_USERNA = ['id']
+COL_USP = ['first_name', 'last_name', 'age', 'relation']
 
 #Initialise Connections
 def init():
-    global KEYSPACE, USERS, USERNAME
+    global KEYSPACE, USERS, USERNAME, USERPROFILE
     try:
         KEYSPACE = pycassa.connect( 'fabcassa', [CONNECTION] )
         USERS = pycassa.ColumnFamily( KEYSPACE,'Users' )
         USERNAME = pycassa.ColumnFamily( KEYSPACE, 'Username' )
+        USERPROFILE = pycassa.ColumnFamily( KEYSPACE, 'UserProfile' )
     except:
         print sys.exc_info()
         sys.exit()
@@ -98,16 +102,46 @@ def authenticate(usern=None,passw=None):
         print "Username does not exist"
         return
 
+def modifyUserProfile(usern=None, passw=None, first_name=None, last_name=None, age=None, relation=None):
+    global LOGED_USER, USERPROFILE
+    if LOGED_USER is None:
+        print "User is not Logged in !!"
+        authenticate(usern,passw)
+    else:
+        print "Welcome",LOGED_USER['username'],"!!"
+        if first_name is None:
+            first_name = str(raw_input("Enter First Name: "))
+        if last_name is None:
+            last_name = str(raw_input("Enter Last Name: "))
+        if age is None:
+            age = str(raw_input("Enter your age: "))
+        if relation is None:
+            relation = str(raw_input("Enter you relationship status: "))
+        
+        USERPROFILE.insert( LOGED_USER['id'], { COL_USP[0]:first_name, COL_USP[1]:last_name, COL_USP[2]:age, COL_USP[3]:relation })
+
+def viewProfile():
+    global LOGED_USER
+    if LOGED_USER is None:
+        print "User is not Logged in !!"
+        authenticate()
+    else:
+        print "Your Profile details!!"
+        user_prof = USERPROFILE.get(LOGED_USER['id'])
+        print user_prof
+
 def main():
     print "Welcome to Sample facassa!!!\n"
-    print "1)Register New User\n2)Log In\n3)Exit the APP"
+    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)Exit the APP"
     option = int(raw_input("Please select an Option:"))
-    while option != 3:
+    while option != 4:
         if option == 1:
             insert_new()
         elif option == 2:
             authenticate()
-        print "1)Register New User\n2)Log In\n3)Exit the APP"
+        elif option == 3:
+            viewProfile()
+        print "1)Register New User\n2)Log In\n3)Modify User Profile\n3)Exit the APP"
         option = int(raw_input("Please select an Option:"))
 
 if __name__ == "__main__":
