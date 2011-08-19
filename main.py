@@ -37,53 +37,79 @@ def init():
         sys.exit()
 
 #Insert a new username if not present
-def insert_new():
+def insert_new(usern=None,passw=None):
     global USERS, USERNAME
     
     if USERS is None or USERNAME is None:
-        print "Not connected to Column Family"
+        print "Not connected to Column Family\n"
         sys.exit()
     try:
-        username = str(raw_input("Enter new Username: "))
+        if usern is None:
+            username = str(raw_input("Enter new Username: "))
+        else:
+            username = usern
 #Check if username already present
         try:
             if USERNAME.get(username):
-                print "Username already exists"
+                print "Username already exists\n"
                 return 
         except:
             pass
 
-        password = getpass.getpass("Enter new password: ")
-        password2 = getpass.getpass("Re-Enter new password: ")
+        if passw is not None:
+            password = passw
+            password2 = passw
+        else:
+            password = getpass.getpass("Enter new password: ")
+           password2 = getpass.getpass("Re-Enter new password: ")
+           
         if password != password2:
-            print "Passwords dont match"
+            print "Passwords dont match\n"
         else:
             user_id = str(uuid.uuid4())
             USERS.insert(user_id,{COL_USERS[0]:user_id, COL_USERS[1]:username, COL_USERS[2]:password})
             USERNAME.insert(username,{COL_USERNA[0]:user_id})
-            print "User with username ",username," successfully created"
+            print "User with username ",username," successfully created\n"
     except:
             print sys.exc_info()
 
-def authenticate():
+def authenticate(usern=None,passw=None):
     global USERS, USERNAME, LOGED_USER
-    username = str(raw_input("Enter the username: "))
+    if usern is None:
+        username = str(raw_input("Enter the username: "))
+    else:
+        username = usern
     try:
         user_exist = USERNAME.get(username)
         if user_exist is not None:
-            password = getpass.getpass("Enter the password: ")
+            if passw is None:
+                password = getpass.getpass("Enter the password: ")
+            else:
+                password = passw
             user_info = USERS.get(user_exist['id'])
             if user_info['password'] == password:
                 LOGED_USER = user_info
-                print "You are successfully logged in"
+                print "You are successfully logged in\n"
             else:
-                print "Wrong Password"
+                print "Wrong Password\n"
                 return
     except:
         print "Username does not exist"
         return
 
+def main():
+    print "Welcome to Sample facassa!!!\n"
+    print "1)Register New User\n2)Log In\n3)Exit the APP"
+    option = int(raw_input("Please select an Option:"))
+    while option != 3:
+        if option == 1:
+            insert_new()
+        elif option == 2:
+            authenticate()
+        print "1)Register New User\n2)Log In\n3)Exit the APP"
+        option = int(raw_input("Please select an Option:"))
+
 if __name__ == "__main__":
     init()
-    authenticate()
-    
+    main()
+     
