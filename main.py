@@ -19,6 +19,7 @@ CONNECTION = 'cass01:9160'
 KEYSPACE = None
 USERS = None
 USERNAME = None
+LOGED_USER = None
 #Column def for each column family
 
 COL_USERS = ['id', 'username', 'password']
@@ -63,6 +64,26 @@ def insert_new():
             print "User with username ",username," successfully created"
     except:
             print sys.exc_info()
+
+def authenticate():
+    global USERS, USERNAME, LOGED_USER
+    username = str(raw_input("Enter the username: "))
+    try:
+        user_exist = USERNAME.get(username)
+        if user_exist is not None:
+            password = getpass.getpass("Enter the password: ")
+            user_info = USERS.get(user_exist['id'])
+            if user_info['password'] == password:
+                LOGED_USER = user_info
+                print "You are successfully logged in"
+            else:
+                print "Wrong Password"
+                return
+    except:
+        print "Username does not exist"
+        return
+
 if __name__ == "__main__":
     init()
-    insert_new()
+    authenticate()
+    
