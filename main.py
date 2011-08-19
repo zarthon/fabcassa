@@ -145,7 +145,6 @@ def addFriends(frnd_user=None):
                     user_info = LOGED_USER
                     userna = USERNAME.get(user_info['username'])
 
-
         except:
             print sys.exc_info()
             print "User doesn't exist"
