@@ -26,9 +26,9 @@ LOGED_USER = None
 #Column def for each column family
 
 COL_USERS = ['id', 'username', 'password']
-COL_USERNA = ['id','friend_list']
+COL_USERNA = ['id']
 COL_USP = ['first_name', 'last_name', 'age', 'relation']
-COL_FRND = ['user_id', 'friend_id']
+COL_FRND = ['friend_list']
 #Initialise Connections
 def init():
     global KEYSPACE, USERS, USERNAME, USERPROFILE, FRIENDS
@@ -73,8 +73,9 @@ def insert_new(usern=None,passw=None):
             print "Passwords dont match\n"
         else:
             user_id = str(uuid.uuid4())
+            FRIENDS.insert(username,{COL_FRND[0]:{username:user_id} })
             USERS.insert(user_id,{COL_USERS[0]:user_id, COL_USERS[1]:username, COL_USERS[2]:password})
-            USERNAME.insert(username,{COL_USERNA[0]:user_id})
+            USERNAME.insert(username,{COL_USERNA[0]:user_id })
             print "User with username ",username," successfully created\n"
     except:
             print sys.exc_info()
@@ -140,11 +141,16 @@ def addFriends(frnd_user=None):
         try:
             if frnd_user is None:
                 frnd_user = str(raw_input("Enter Friend Username: "))
-                frnd = USERNAME.get(frnd_user)
-                if frnd is not None:
-                    user_info = LOGED_USER
-                    userna = USERNAME.get(user_info['username'])
-
+            username_frnd = USERNAME.get(frnd_user)
+            username_user = USERNAME.get(LOGED_USER['username'])
+            if username_frnd is not None:
+                friends_user = FRIENDS.get(LOGED_USER['username'])
+                friends_frnd = FRIENDS.get(frnd_user)
+                friends_frnd['friend_list'][LOGED_USER['username']] = username_user['id']
+                friends_user['friend_list'][frnd_user] = username_frnd['id']
+                FRIENDS.insert( frnd_user,{ COL_FRND[0]:friends_frnd['friend_list'] })
+                FRIENDS.insert( LOGED_USER['username'],{COL_USERNA[0]:friends_user['friend_list'] })
+                print friends_frnd['friend_list']
         except:
             print sys.exc_info()
             print "User doesn't exist"
