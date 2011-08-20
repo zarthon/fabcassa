@@ -8,3 +8,4 @@ if __name__ == "__main__":
     sys.create_column_family('fabcassa','Username')
     sys.create_column_family('fabcassa','Friends',super=True)
     sys.create_column_family('fabcassa','UserProfile')
+    sys.create_column_family('fabcassa','WallPosts')

@@ -20,7 +20,7 @@ KEYSPACE = None
 USERS = None
 USERNAME = None
 FRIENDS = None
-COMMENTS = None
+WALLPOST = None
 USERPROFILE = None
 LOGED_USER = None
 #Column def for each column family
@@ -37,7 +37,8 @@ def init():
         USERS = pycassa.ColumnFamily( KEYSPACE,'Users' )
         USERNAME = pycassa.ColumnFamily( KEYSPACE, 'Username' )
         USERPROFILE = pycassa.ColumnFamily( KEYSPACE, 'UserProfile' )
-        FRIENDS = pycassa.ColumnFamily( KEYSPACE, 'Friends')
+        FRIENDS = pycassa.ColumnFamily( KEYSPACE, 'Friends' )
+        WALLPOST = pycassa.ColumnFamily( KEYSPACE, 'WallPosts' )
     except:
         print sys.exc_info()
         sys.exit()
@@ -170,6 +171,14 @@ def viewFriends():
         for friend in friends:
             print friend
 
+def postNew():
+    global LOGED_USER
+    
+    if LOGED_USER is None:
+        print "User is not Logged in !!"
+        authenticate()
+    else:
+        pass
 
 def main():
     print "Welcome to Sample facassa!!!\n"
