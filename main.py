@@ -216,6 +216,13 @@ def postComment():
         comentid = str(uuid.uuid4())
 #Insert the comment in to COMMENTS as well as MAPCOMMENT
 
+#Show all the posts 
+def viewPosts():
+    pass
+
+#show coments for selected post
+def viewComments():
+    pass
 
 def main():
     print "Welcome to Sample facassa!!!\n"
