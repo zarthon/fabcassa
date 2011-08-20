@@ -15,7 +15,7 @@ import sys
 import getpass
 #global variables
 
-CONNECTION = 'cass01:9160'
+CONNECTION = 'localhost:9160'
 KEYSPACE = None
 USERS = None
 USERNAME = None
@@ -158,9 +158,9 @@ def addFriends(frnd_user=None):
 
 def main():
     print "Welcome to Sample facassa!!!\n"
-    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Exit the APP"
+    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)Exit the APP"
     option = int(raw_input("Please select an Option:"))
-    while option != 5:
+    while option != 6:
         if option == 1:
             insert_new()
         elif option == 2:
@@ -168,8 +168,10 @@ def main():
         elif option == 3:
             modifyUserProfile()
         elif option == 4:
+            viewProfile()
+        elif option ==5:
             addFriends()
-        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Exit the APP"
+        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)Exit the APP"
         option = int(raw_input("Please select an Option:"))
 
 if __name__ == "__main__":

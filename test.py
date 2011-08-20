@@ -16,9 +16,12 @@ def test_insert():
         main.insert_new(usern = user,passw = sample_data[user])
 
 def test_profile():
+    pass
+'''
     for user in sample data:
         main.authenticate(user,sample_data[user])
         main.modifyUserProfile()
+'''
 if __name__=="__main__":
     main.init()
     test_insert()

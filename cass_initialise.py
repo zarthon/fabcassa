@@ -2,7 +2,7 @@ import pycassa
 from pycassa.system_manager import *
 
 if __name__ == "__main__":
-    sys = SystemManager('cass01:9160')
+    sys = SystemManager('localhost:9160')
     sys.create_keyspace('fabcassa',2)
     sys.create_column_family('fabcassa','Users')
     sys.create_column_family('fabcassa','Username')
