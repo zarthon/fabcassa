@@ -203,6 +203,19 @@ def postNew():
             wall_list[timestamp] = wallid
             MAPWALL.insert(LOGED_USER['username'],{'post_list':wall_list})
 
+def postComment():
+    global LOGED_USER
+
+    if LOGED_USER is None:
+        print "User is not Logged in !!"
+        authenticate()
+    else:
+        #Get list of friends wall post
+        body = str(raw_input("Enter you comment: "))
+        timestamp = time.time()
+        comentid = str(uuid.uuid4())
+#Insert the comment in to COMMENTS as well as MAPCOMMENT
+
 
 def main():
     print "Welcome to Sample facassa!!!\n"
