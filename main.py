@@ -178,6 +178,7 @@ def postNew():
         print "User is not Logged in !!"
         authenticate()
     else:
+        body = str(raw_input("Enter the body of post"))
         pass
 
 def main():

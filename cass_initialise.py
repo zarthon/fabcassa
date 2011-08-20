@@ -9,3 +9,6 @@ if __name__ == "__main__":
     sys.create_column_family('fabcassa','Friends',super=True)
     sys.create_column_family('fabcassa','UserProfile')
     sys.create_column_family('fabcassa','WallPosts')
+    sys.create_column_family('fabcassa','MapWall',super=True)
+    sys.create_column_family('fabcassa','Comments')
+    sys.create_column_family('fabcassa','MapComment',super=True)
