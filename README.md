@@ -1,5 +1,8 @@
 Day 1
 =====
+I will be creating an  independent as well as automated application. It can be used from command line as well as by
+scripts.
+
 
 * Fixed on creating an database schema in cassandra first and than move ahead on hadoop
 * Looked on mainly 2 of the high level clients available for cassandra i.e Pycassa for python and pelops for Java.
@@ -52,3 +55,7 @@ CREATE TABLE Comments (
     * create column family WallPosts with comparator=UTF8Type and default_validation_class=UTF8Type;
 
 * Added functionality to inser new users and exit if user is already present
+* Added functionality to insert new friends and if friends already exist than nothing will happen
+* Also created an initialisation script to prepare cassandra before running the app
+* Added sample data to populate the DB
+
