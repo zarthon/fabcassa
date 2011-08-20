@@ -151,7 +151,6 @@ def addFriends(frnd_user=None):
                 friends_user['friend_list'][frnd_user] = username_frnd['id']
                 FRIENDS.insert( frnd_user,{ COL_FRND[0]:friends_frnd['friend_list'] })
                 FRIENDS.insert( LOGED_USER['username'],{COL_USERNA[0]:friends_user['friend_list'] })
-                print friends_frnd['friend_list']
         except:
             print sys.exc_info()
             print "User doesn't exist"
@@ -164,11 +163,12 @@ def viewFriends():
         print "User is not Logged in !!"
         authenticate()
     else:
-        friends = FRIENDS.get(LOGED_USER['username'])
+        friend_row = FRIENDS.get(LOGED_USER['username'])
         print "Welconme ",LOGED_USER['username']," !!"
         print "Following is the list of friends you currently have:-"
+        friends = friend_row['friend_list']
         for friend in friends:
-            print friend['username']
+            print friend
 
 
 def main():
