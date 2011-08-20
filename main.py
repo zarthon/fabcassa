@@ -21,17 +21,26 @@ USERS = None
 USERNAME = None
 FRIENDS = None
 WALLPOST = None
+COMMENT = None
 USERPROFILE = None
 LOGED_USER = None
+MAPWALL = None
+MAPCOMMENT = None
 #Column def for each column family
 
 COL_USERS = ['id', 'username', 'password']
 COL_USERNA = ['id']
 COL_USP = ['first_name', 'last_name', 'age', 'relation']
 COL_FRND = ['friend_list']
+COL_WALL = ['wallpost_id','body','timestamp']
+COL__COMMENT = ['comment_id','user_id','body','timestamp']
+COL_MAPWALL = ['post_list']
+COL_MAPCOMMENT = ['commment_list']
+
+
 #Initialise Connections
 def init():
-    global KEYSPACE, USERS, USERNAME, USERPROFILE, FRIENDS
+    global KEYSPACE, USERS, USERNAME, USERPROFILE, FRIENDS, WALLPOST, COMMENT, MAPWALL, MAPCOMMENT
     try:
         KEYSPACE = pycassa.connect( 'fabcassa', [CONNECTION] )
         USERS = pycassa.ColumnFamily( KEYSPACE,'Users' )
@@ -39,6 +48,9 @@ def init():
         USERPROFILE = pycassa.ColumnFamily( KEYSPACE, 'UserProfile' )
         FRIENDS = pycassa.ColumnFamily( KEYSPACE, 'Friends' )
         WALLPOST = pycassa.ColumnFamily( KEYSPACE, 'WallPosts' )
+        COMMENT = pycassa.ColumnFamily( KEYSPACE, 'Comment')
+        MAPWALL = pycassa.ColumnFamily(KEYSPACE,'MapWall')
+        MAPCOMMENT = pycassa.ColumnFamily(KEYSPACE,'MapComment')
     except:
         print sys.exc_info()
         sys.exit()
@@ -179,7 +191,18 @@ def postNew():
         authenticate()
     else:
         body = str(raw_input("Enter the body of post"))
-        pass
+        wallid = str(uuid.uuid4())
+        timestamp = time.time()
+        WALLPOST.insert(wallid,{COL_WALL[0]:wallid,COL_WALL[1]:body,COL_WALL[2]:timestamp})
+        #Get the user who is posting from MAP_WALL
+        user = MAPWALL.get(LOGED_USER['username'])
+        if user is None:
+            ptrint "User does not exist !! Please Register..:P"
+        else:
+            wall_list = user['post_list']
+            wall_list[timestamp] = wallid
+            MAPWALL.insert(LOGED_USER['username'],{'post_list':wall_list})
+
 
 def main():
     print "Welcome to Sample facassa!!!\n"
