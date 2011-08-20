@@ -121,6 +121,7 @@ def modifyUserProfile(usern=None, passw=None, first_name=None, last_name=None, a
             relation = str(raw_input("Enter you relationship status: "))
         
         USERPROFILE.insert( LOGED_USER['id'], { COL_USP[0]:first_name, COL_USP[1]:last_name, COL_USP[2]:age, COL_USP[3]:relation })
+        print "Your profile is successfully saved!"
 
 def viewProfile():
     global LOGED_USER
@@ -156,11 +157,25 @@ def addFriends(frnd_user=None):
             print "User doesn't exist"
             return
 
+def viewFriends():
+    global LOGED_USER
+
+    if LOGED_USER is None:
+        print "User is not Logged in !!"
+        authenticate()
+    else:
+        friends = FRIENDS.get(LOGED_USER['username'])
+        print "Welconme ",LOGED_USER['username']," !!"
+        print "Following is the list of friends you currently have:-"
+        for friend in friends:
+            print friend['username']
+
+
 def main():
     print "Welcome to Sample facassa!!!\n"
-    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)Exit the APP"
+    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Exit the APP"
     option = int(raw_input("Please select an Option:"))
-    while option != 6:
+    while option != 7:
         if option == 1:
             insert_new()
         elif option == 2:
@@ -169,9 +184,11 @@ def main():
             modifyUserProfile()
         elif option == 4:
             viewProfile()
-        elif option ==5:
+        elif option == 5:
             addFriends()
-        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)Exit the APP"
+        elif option == 6:
+            viewFriends()
+        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Exit the APP"
         option = int(raw_input("Please select an Option:"))
 
 if __name__ == "__main__":
