@@ -58,4 +58,4 @@ CREATE TABLE Comments (
 * Added functionality to insert new friends and if friends already exist than nothing will happen
 * Also created an initialisation script to prepare cassandra before running the app
 * Added sample data to populate the DB
-
+* Modified the connection for localhost as I have access to other box only at college and am leaving now
