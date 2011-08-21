@@ -89,7 +89,7 @@ def insert_new(usern=None,passw=None):
             FRIENDS.insert(username,{COL_FRND[0]:{username:user_id} })
             USERS.insert(user_id,{COL_USERS[0]:user_id, COL_USERS[1]:username, COL_USERS[2]:password})
             USERNAME.insert(username,{COL_USERNA[0]:user_id })
-            MAPWALL.insert(username,{COL_MAPWALL[0]:{str(time.time()):'fas'}})
+            MAPWALL.insert(username,{COL_MAPWALL[0]:{'sample':str(time.time())}})
             print "User with username ",username," successfully created\n"
     except:
             print sys.exc_info()
@@ -185,14 +185,16 @@ def viewFriends():
         for friend in friends:
             print friend
 
-def postNew():
+def postNew(body=None):
     global LOGED_USER
     
     if LOGED_USER is None:
         print "User is not Logged in !!"
         authenticate()
     else:
-        body = str(raw_input("Enter the body of post"))
+        if body is None:
+            body = str(raw_input("Enter the body of post"))
+
         wallid = str(uuid.uuid4())
         timestamp = str(time.time())
         user = MAPWALL.get(LOGED_USER['username'])
@@ -207,9 +209,9 @@ def postNew():
             friends = friend_row['friend_list']
             for friend in friends:
                 user = MAPWALL.get(str(friend))
-                user[COL_MAPWALL[0]][timestamp] = wallid
-                print user[COL_MAPWALL[0]]
+                user[COL_MAPWALL[0]][wallid] = timestamp
                 MAPWALL.insert(friend,{COL_MAPWALL[0]:user[COL_MAPWALL[0]]})
+            print "Following post: "+ body + " successfully posted on all friends wall"
 
 #Show all the posts 
 def viewPosts():
@@ -221,7 +223,13 @@ def viewPosts():
     else:
         wallist_row = MAPWALL.get(LOGED_USER['username'])
         wallposts = wallist_row[COL_MAPWALL[0]]
-        for post in wallposts:
+        print wallposts
+        for postid in wallposts:
+            print postid
+            if postid == 'sample':
+                continue;
+            actual_post = WALLPOST.get(postid)
+            print actual_post
 
 
 def postComment():

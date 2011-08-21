@@ -12,6 +12,8 @@ sample_user_profile ={'mohit':['Mohit','Kothari','23','Single'], 'kedar':['Kedar
 
 sample_friends = {'mohit':['kedar','maullik'], 'kedar':['mohit','nikhil'], 'maullik':['mohit','nikhil'], 'nikhil':['kedar','maullik'], 'naman':['ishani','hetaswi'], 'ishani':['naman','hetaswi'], 'hetaswi':['naman','ishani']}
 
+sample_posts = {'mohit':['first','seoncd'], 'kedar':['hello everybody','hi how are you'], 'maullik':['i am maullik','my friends i like'], 'nikhil':['hell is here','god bless you'], 'naman':['philosphy','my asd'], 'ishani':['hellogs','porty'], 'hetaswi':['toeier','jai shree shyam']}
+
 def test_insert():
     for user in sample_data:
         main.insert_new(usern = user,passw = sample_data[user])
@@ -30,9 +32,22 @@ def test_friends():
             main.addFriends(friend)
         main.viewFriends()
 
+def test_posts():
+    for i in range(1,len(sample_username)):
+        username = sample_username[i]
+        main.authenticate(username,sample_data[username])
+        for post in sample_posts[username]:
+            main.postNew(body=post)
+def test_viewPost():
+    for i in range(1,len(sample_username)):
+        username = sample_username[i]
+        main.authenticate(username,sample_data[username])
+        main.viewPosts()
 
 if __name__=="__main__":
     main.init()
     test_insert()
     test_profile()
     test_friends()
+    test_posts()
+    test_viewPost()
