@@ -269,13 +269,13 @@ def viewPosts(coment_flag=False,option=None):
             print str(counter) +") "+ post_user['username'] + " posted: " + actual_post['body']
             counter += 1
             try:
-                coment_list = mapcomment.get(postid)[col_mapcomment[0]]
+                coment_row = MAPCOMMENT.get(postid)
+                coment_list = coment_row[COL_MAPCOMMENT[0]]
                 for comentid in coment_list:
-                    comment = comment.get(comentid)
-                    print "\tuser: "+users.get(comment['user_id'])['username']+" commented: "+comment['body']
+                    comment = COMMENT.get(comentid)
+                    print "\tuser: "+USERS.get(comment['user_id'])['username']+" commented: "+comment['body']
             except:
-                pass 
-
+                pass
         if coment_flag and coment_avail:
             if option is None:
                 post = int(raw_input("Select a post: "))

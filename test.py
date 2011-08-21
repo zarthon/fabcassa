@@ -14,8 +14,7 @@ sample_friends = {'mohit':['kedar','maullik'], 'kedar':['mohit','nikhil'], 'maul
 
 sample_posts = {'mohit':['first','seoncd'], 'kedar':['hello everybody','hi how are you'], 'maullik':['i am maullik','my friends i like'], 'nikhil':['hell is here','god bless you'], 'naman':['philosphy','my asd'], 'ishani':['hellogs','porty'], 'hetaswi':['toeier','jai shree shyam']}
 
-sample_comment = {'mohit':[1,'seosdawencd'], 'kedar':[2,'comment2'], 'maullik':[3,'comment3'], 'nikhil':[4,'comment4:hell
-    is here'], 'naman':[5,'may god does this'], 'ishani':[6,'dogs are cute'], 'hetaswi':['4','comment last']}
+sample_comment = {'mohit':[1,'seosdawencd'], 'kedar':[2,'comment2'], 'maullik':[3,'comment3'], 'nikhil':[4,'comment4:hell is here'], 'naman':[5,'may god does this'], 'ishani':[6,'dogs are cute'], 'hetaswi':['4','comment last']}
 
 def test_insert():
     for user in sample_data:
