@@ -32,7 +32,7 @@ COL_USERS = ['id', 'username', 'password']
 COL_USERNA = ['id']
 COL_USP = ['first_name', 'last_name', 'age', 'relation']
 COL_FRND = ['friend_list']
-COL_WALL = ['wallpost_id','body','timestamp']
+COL_WALL = ['wallpost_id','body','timestamp','user_id']
 COL_COMMENT = ['comment_id','user_id','body','timestamp']
 COL_MAPWALL = ['post_list']
 COL_MAPCOMMENT = ['commment_list']
@@ -204,7 +204,7 @@ def postNew(body=None):
             return
         else:
 #Obtain all the friends and post the body to all friends walllist
-            WALLPOST.insert(wallid,{COL_WALL[0]:wallid,COL_WALL[1]:body,COL_WALL[2]:timestamp})
+            WALLPOST.insert(wallid,{COL_WALL[0]:wallid,COL_WALL[1]:body,COL_WALL[2]:timestamp,COL_WALL[3]:LOGED_USER['id']})
             friend_row = FRIENDS.get(LOGED_USER['username'])
             friends = friend_row['friend_list']
             for friend in friends:
@@ -214,7 +214,32 @@ def postNew(body=None):
             print "Following post: "+ body + " successfully posted on all friends wall"
 
 #Show all the posts 
-def viewPosts(coment_flag=False):
+def postComment(body=None,post_no=None):
+    global LOGED_USER
+
+    if LOGED_USER is None:
+        print "User is not Logged in !!"
+        authenticate()
+    else:
+        #Get list of friends wall post
+        post_id = viewPosts(coment_flag=True,option=post_no)
+        print post_id
+        comment_id = str(uuid.uuid4())
+        if body is None:
+            body = str(raw_input("Enter you comment: "))
+        timestamp = str(time.time())
+        try:
+            COMMENT.insert(comment_id,{COL_COMMENT[0]:comment_id,COL_COMMENT[1]:LOGED_USER['id'],COL_COMMENT[2]:body,COL_COMMENT[3]:timestamp})
+            curent_coment_list = MAPCOMMENT.get(post_id)[COL_MAPCOMMENT[0]]
+            curent_coment_list[comment_id] = LOGED_USER['username']
+            MAPCOMMENT.insert(postid,{COL_MAPCOMMENT[0]:curent_coment_list})
+        except:
+            print sys.exc_info()
+            print post_id
+            MAPCOMMENT.insert(post_id,{COL_MAPCOMMENT[0]:{comment_id:LOGED_USER['username']}})
+            print "Comment: "+body+" added"
+
+def viewPosts(coment_flag=False,option=None):
     global LOGED_USER
 
     if LOGED_USER is None:
@@ -240,67 +265,30 @@ def viewPosts(coment_flag=False):
             if coment_flag and coment_avail:
                 map_id[counter] = postid
             actual_post = WALLPOST.get(postid)
-            print str(counter) +") "+ actual_post['body']
+            post_user = USERS.get(actual_post['user_id'])
+            print str(counter) +") "+ post_user['username'] + " posted: " + actual_post['body']
             counter += 1
+            try:
+                coment_list = mapcomment.get(postid)[col_mapcomment[0]]
+                for comentid in coment_list:
+                    comment = comment.get(comentid)
+                    print "\tuser: "+users.get(comment['user_id'])['username']+" commented: "+comment['body']
+            except:
+                pass 
+
         if coment_flag and coment_avail:
-            post = int(raw_input("Select a post: "))
+            if option is None:
+                post = int(raw_input("Select a post: "))
+            else:
+                post = option
             if post>counter or post<=0:
                 print "Select correct post number"
-                return viewPosts(coment_flag=True)
+                return viewPosts(coment_flag=True,option=post)
             else:
                 return map_id[post]
     
         return
 
-def postComment():
-    global LOGED_USER
-
-    if LOGED_USER is None:
-        print "User is not Logged in !!"
-        authenticate()
-    else:
-        #Get list of friends wall post
-        post_id = viewPosts(coment_flag=True)
-        print post_id
-        comment_id = str(uuid.uuid4())
-        body = str(raw_input("Enter you comment: "))
-        timestamp = str(time.time())
-        try:
-            COMMENT.insert(comment_id,{COL_COMMENT[0]:comment_id,COL_COMMENT[1]:LOGED_USER['id'],COL_COMMENT[2]:body,COL_COMMENT[3]:timestamp})
-            curent_coment_list = MAPCOMMENT.get(post_id)[COL_MAPCOMMENT[0]]
-            curent_coment_list[comment_id] = LOGED_USER['username']
-            MAPCOMMENT.insert(postid,{COL_MAPCOMMENT[0]:curent_coment_list})
-        except:
-            print sys.exc_info()
-            MAPCOMMENT.insert(post_id,{COL_MAPCOMMENT[0]:{comment_id:LOGED_USER['username']}})
-            print MAPCOMMENT.get(post_id)[COL_MAPCOMMENT][0]
-            print "Comment added"
-
-def viewPostwithComent():
-    global LOGED_USER
-
-    if LOGED_USER is None:
-        print "User is not Logged in !!"
-        authenticate()
-    else:
-        print "Hello "+LOGED_USER['username']+"!!!"
-        wallist_row = MAPWALL.get(LOGED_USER['username'])
-        wallposts = wallist_row[COL_MAPWALL[0]]
-        counter = 1
-        for postid in wallposts:
-            if postid == 'sample':
-                continue
-            actual_post = WALLPOST.get(postid)
-            print str(counter) +") "+ actual_post['body']
-#print comments
-            counter += 1
-            try:
-                coment_list = MAPCOMMENT.get(postid)[COL_MAPCOMMENT[0]]
-                for comentid in coment_list:
-                    comment = COMMENT.get(comentid)
-                    print "\tUser: "+USERS.get(comment['user_id'])['username']+" posted: "+comment['body']
-            except:
-                pass 
 
 #Insert the comment in to COMMENTS as well as MAPCOMMENT
 
