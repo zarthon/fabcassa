@@ -33,4 +33,6 @@ def test_friends():
 
 if __name__=="__main__":
     main.init()
+    test_insert()
+    test_profile()
     test_friends()

@@ -33,7 +33,7 @@ COL_USERNA = ['id']
 COL_USP = ['first_name', 'last_name', 'age', 'relation']
 COL_FRND = ['friend_list']
 COL_WALL = ['wallpost_id','body','timestamp']
-COL__COMMENT = ['comment_id','user_id','body','timestamp']
+COL_COMMENT = ['comment_id','user_id','body','timestamp']
 COL_MAPWALL = ['post_list']
 COL_MAPCOMMENT = ['commment_list']
 
@@ -48,7 +48,7 @@ def init():
         USERPROFILE = pycassa.ColumnFamily( KEYSPACE, 'UserProfile' )
         FRIENDS = pycassa.ColumnFamily( KEYSPACE, 'Friends' )
         WALLPOST = pycassa.ColumnFamily( KEYSPACE, 'WallPosts' )
-        COMMENT = pycassa.ColumnFamily( KEYSPACE, 'Comment')
+        COMMENT = pycassa.ColumnFamily( KEYSPACE, 'Comments')
         MAPWALL = pycassa.ColumnFamily(KEYSPACE,'MapWall')
         MAPCOMMENT = pycassa.ColumnFamily(KEYSPACE,'MapComment')
     except:
@@ -89,6 +89,7 @@ def insert_new(usern=None,passw=None):
             FRIENDS.insert(username,{COL_FRND[0]:{username:user_id} })
             USERS.insert(user_id,{COL_USERS[0]:user_id, COL_USERS[1]:username, COL_USERS[2]:password})
             USERNAME.insert(username,{COL_USERNA[0]:user_id })
+            MAPWALL.insert(username,{COL_MAPWALL[0]:{str(time.time()):'fas'}})
             print "User with username ",username," successfully created\n"
     except:
             print sys.exc_info()
@@ -162,6 +163,7 @@ def addFriends(frnd_user=None):
                 friends_frnd = FRIENDS.get(frnd_user)
                 friends_frnd['friend_list'][LOGED_USER['username']] = username_user['id']
                 friends_user['friend_list'][frnd_user] = username_frnd['id']
+                print friends_frnd['friend_list']
                 FRIENDS.insert( frnd_user,{ COL_FRND[0]:friends_frnd['friend_list'] })
                 FRIENDS.insert( LOGED_USER['username'],{COL_USERNA[0]:friends_user['friend_list'] })
         except:
@@ -192,16 +194,35 @@ def postNew():
     else:
         body = str(raw_input("Enter the body of post"))
         wallid = str(uuid.uuid4())
-        timestamp = time.time()
-        WALLPOST.insert(wallid,{COL_WALL[0]:wallid,COL_WALL[1]:body,COL_WALL[2]:timestamp})
-        #Get the user who is posting from MAP_WALL
+        timestamp = str(time.time())
         user = MAPWALL.get(LOGED_USER['username'])
+        #Get the user who is posting from MAP_WALL
         if user is None:
-            ptrint "User does not exist !! Please Register..:P"
+            print "User does not exist !! Please Register..:P"
+            return
         else:
-            wall_list = user['post_list']
-            wall_list[timestamp] = wallid
-            MAPWALL.insert(LOGED_USER['username'],{'post_list':wall_list})
+#Obtain all the friends and post the body to all friends walllist
+            WALLPOST.insert(wallid,{COL_WALL[0]:wallid,COL_WALL[1]:body,COL_WALL[2]:timestamp})
+            friend_row = FRIENDS.get(LOGED_USER['username'])
+            friends = friend_row['friend_list']
+            for friend in friends:
+                user = MAPWALL.get(str(friend))
+                user[COL_MAPWALL[0]][timestamp] = wallid
+                print user[COL_MAPWALL[0]]
+                MAPWALL.insert(friend,{COL_MAPWALL[0]:user[COL_MAPWALL[0]]})
+
+#Show all the posts 
+def viewPosts():
+    global LOGED_USER
+
+    if LOGED_USER is None:
+        print "User is not Logged in !!"
+        authenticate()
+    else:
+        wallist_row = MAPWALL.get(LOGED_USER['username'])
+        wallposts = wallist_row[COL_MAPWALL[0]]
+        for post in wallposts:
+
 
 def postComment():
     global LOGED_USER
@@ -216,9 +237,6 @@ def postComment():
         comentid = str(uuid.uuid4())
 #Insert the comment in to COMMENTS as well as MAPCOMMENT
 
-#Show all the posts 
-def viewPosts():
-    pass
 
 #show coments for selected post
 def viewComments():
@@ -238,9 +256,9 @@ def main():
         elif option == 4:
             viewProfile()
         elif option == 5:
-            addFriends()
+            postNew()
         elif option == 6:
-            viewFriends()
+            viewPosts()
         print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Exit the APP"
         option = int(raw_input("Please select an Option:"))
 
