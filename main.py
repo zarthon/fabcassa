@@ -89,8 +89,8 @@ def insert_new(usern=None,passw=None):
             FRIENDS.insert(username,{COL_FRND[0]:{username:user_id} })
             USERS.insert(user_id,{COL_USERS[0]:user_id, COL_USERS[1]:username, COL_USERS[2]:password})
             USERNAME.insert(username,{COL_USERNA[0]:user_id })
-            print 'username:'+username+'user_id: '+user_id
             MAPWALL.insert(username,{COL_MAPWALL[0]:{'sample':str(time.time())}})
+            MAPCOMMENT.insert(username,{COL_MAPCOMMENT[0]:{'sample':str(time.time())}})
             print "User with username ",username," successfully created\n"
     except:
             print sys.exc_info()
@@ -164,7 +164,6 @@ def addFriends(frnd_user=None):
                 friends_frnd = FRIENDS.get(frnd_user)
                 friends_frnd['friend_list'][LOGED_USER['username']] = username_user['id']
                 friends_user['friend_list'][frnd_user] = username_frnd['id']
-                print friends_frnd['friend_list']
                 FRIENDS.insert( frnd_user,{ COL_FRND[0]:friends_frnd['friend_list'] })
                 FRIENDS.insert( LOGED_USER['username'],{COL_USERNA[0]:friends_user['friend_list'] })
         except:
@@ -215,23 +214,43 @@ def postNew(body=None):
             print "Following post: "+ body + " successfully posted on all friends wall"
 
 #Show all the posts 
-def viewPosts():
+def viewPosts(coment_flag=False):
     global LOGED_USER
 
     if LOGED_USER is None:
         print "User is not Logged in !!"
         authenticate()
     else:
-        print "Hello "+LOGED_USER['username']+"!!!"
-        wallist_row = MAPWALL.get(LOGED_USER['username'])
-        wallposts = wallist_row[COL_MAPWALL[0]]
-        print wallposts
+        if not coment_flag:
+            print "Hello "+LOGED_USER['username']+"!!!"
+        else:
+            print "Hello "+LOGED_USER['username']+" ,please select a post to comment!!"
+        coment_avail = True
+        try:
+            wallist_row = MAPWALL.get(LOGED_USER['username'])
+            wallposts = wallist_row[COL_MAPWALL[0]]
+        except:
+            coment_avail = False
+
+        counter = 1
+        map_id = {}
         for postid in wallposts:
             if postid == 'sample':
                 continue
+            if coment_flag and coment_avail:
+                map_id[counter] = postid
             actual_post = WALLPOST.get(postid)
-            print actual_post['body']
-
+            print str(counter) +") "+ actual_post['body']
+            counter += 1
+        if coment_flag and coment_avail:
+            post = int(raw_input("Select a post: "))
+            if post>counter or post<=0:
+                print "Select correct post number"
+                return viewPosts(coment_flag=True)
+            else:
+                return map_id[post]
+    
+        return
 
 def postComment():
     global LOGED_USER
@@ -241,9 +260,48 @@ def postComment():
         authenticate()
     else:
         #Get list of friends wall post
+        post_id = viewPosts(coment_flag=True)
+        print post_id
+        comment_id = str(uuid.uuid4())
         body = str(raw_input("Enter you comment: "))
-        timestamp = time.time()
-        comentid = str(uuid.uuid4())
+        timestamp = str(time.time())
+        try:
+            COMMENT.insert(comment_id,{COL_COMMENT[0]:comment_id,COL_COMMENT[1]:LOGED_USER['id'],COL_COMMENT[2]:body,COL_COMMENT[3]:timestamp})
+            curent_coment_list = MAPCOMMENT.get(post_id)[COL_MAPCOMMENT[0]]
+            curent_coment_list[comment_id] = LOGED_USER['username']
+            MAPCOMMENT.insert(postid,{COL_MAPCOMMENT[0]:curent_coment_list})
+        except:
+            print sys.exc_info()
+            MAPCOMMENT.insert(post_id,{COL_MAPCOMMENT[0]:{comment_id:LOGED_USER['username']}})
+            print MAPCOMMENT.get(post_id)[COL_MAPCOMMENT][0]
+            print "Comment added"
+
+def viewPostwithComent():
+    global LOGED_USER
+
+    if LOGED_USER is None:
+        print "User is not Logged in !!"
+        authenticate()
+    else:
+        print "Hello "+LOGED_USER['username']+"!!!"
+        wallist_row = MAPWALL.get(LOGED_USER['username'])
+        wallposts = wallist_row[COL_MAPWALL[0]]
+        counter = 1
+        for postid in wallposts:
+            if postid == 'sample':
+                continue
+            actual_post = WALLPOST.get(postid)
+            print str(counter) +") "+ actual_post['body']
+#print comments
+            counter += 1
+            try:
+                coment_list = MAPCOMMENT.get(postid)[COL_MAPCOMMENT[0]]
+                for comentid in coment_list:
+                    comment = COMMENT.get(comentid)
+                    print "\tUser: "+USERS.get(comment['user_id'])['username']+" posted: "+comment['body']
+            except:
+                pass 
+
 #Insert the comment in to COMMENTS as well as MAPCOMMENT
 
 
@@ -253,9 +311,9 @@ def viewComments():
 
 def main():
     print "Welcome to Sample facassa!!!\n"
-    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Exit the APP"
+    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Post Comment\n10)View Posts with comment\n11)Exit the APP"
     option = int(raw_input("Please select an Option:"))
-    while option != 9:
+    while option != 11:
         if option == 1:
             insert_new()
         elif option == 2:
@@ -272,7 +330,11 @@ def main():
             postNew()
         elif option == 8:
             viewPosts()
-        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Exit the APP"
+        elif option == 9:
+            postComment()
+        elif option ==10:
+            viewPostwithComent()
+        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Post Comment\n10)View Posts with comment\n11)Exit the APP"
         option = int(raw_input("Please select an Option:"))
 
 if __name__ == "__main__":
