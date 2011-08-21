@@ -59,3 +59,67 @@ CREATE TABLE Comments (
 * Also created an initialisation script to prepare cassandra before running the app
 * Added sample data to populate the DB
 * Modified the connection for localhost as I have access to other box only at college and am leaving now
+
+Day 2
+======
+* Finalised on the design for Wall Posts and Comments
+* Started on skeleton code for the Wall Post and also modified test.py as moved on
+* Defined the column families in Cassandra
+* Also defined the skeletons for the rest of the function that is required in the final application
+* Found it hard to implement the wall post and display them
+* Instead of adding wall post only on users account, also add the to all the friends account
+* Wall functionality is finally implemented
+
+Day 3
+=====
+* Tested the Wall functionality and removed errors encountered when testing
+* Fixed on the design of the Comments design
+* Started on the coding and on the way encountered problems related to wall posts, no user specified when all the posts
+  displayed
+* Changed the design to include the user_id of the posting user so that it can be displayed_
+* Also merged the two different functions of displaying posts i.e viewPosts and viewPostwithComment
+* Completed the functional requirements
+* Also added the test.py to test the above functionalities
+* Removed the debug statements
+
+This is the following design implemented:-
+
+Users
+-----
+    * Key user_id_
+    * Value: userid,username,password
+
+Username
+--------
+    * Key username
+    * Value: userid
+
+Friends(SuperColumn)
+--------------------
+    * Key: username 
+    * Value: column list with mapping (username:id)
+
+UserProfile
+-----------
+    * Key: userid
+    * Value: first_name, last_name, age, relation
+
+WallPost
+--------
+    * Key: wallpostid
+    * Value: wallid, userid, body, timestamp
+
+Comment
+-------
+    * Key: commentid
+    * Value: commentid, userid, body, timestamp
+
+MapWall(SuperColumn)
+--------------------
+    * Key: username
+    * Value: column list with mapping(wallid:timestamp)
+
+MapComment(SuperColumn)
+-----------------------
+    * Key: wallid
+    * Value: column list with mapping(commentid:username)
