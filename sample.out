@@ -1,0 +1,266 @@
+User with username  nikhil  successfully created
+
+User with username  naman  successfully created
+
+User with username  hetaswi  successfully created
+
+User with username  ishani  successfully created
+
+User with username  maullik  successfully created
+
+User with username  mohit  successfully created
+
+User with username  kedar  successfully created
+
+You are successfully logged in
+
+Welcome mohit !!
+Your profile is successfully saved!
+Your Profile details!!
+OrderedDict([('age', '23'), ('first_name', 'Mohit'), ('last_name', 'Kothari'), ('relation', 'Single')])
+You are successfully logged in
+
+Welcome kedar !!
+Your profile is successfully saved!
+Your Profile details!!
+OrderedDict([('age', '23'), ('first_name', 'Kedar'), ('last_name', 'Bhatt'), ('relation', 'Single')])
+You are successfully logged in
+
+Welcome maullik !!
+Your profile is successfully saved!
+Your Profile details!!
+OrderedDict([('age', '23'), ('first_name', 'Maullik'), ('last_name', 'Padia'), ('relation', 'Single')])
+You are successfully logged in
+
+Welcome nikhil !!
+Your profile is successfully saved!
+Your Profile details!!
+OrderedDict([('age', '23'), ('first_name', 'Nikhil'), ('last_name', 'Marathe'), ('relation', 'Single')])
+You are successfully logged in
+
+Welcome naman !!
+Your profile is successfully saved!
+Your Profile details!!
+OrderedDict([('age', '23'), ('first_name', 'Naman'), ('last_name', 'Muley'), ('relation', 'Single')])
+You are successfully logged in
+
+Welcome ishani !!
+Your profile is successfully saved!
+Your Profile details!!
+OrderedDict([('age', '23'), ('first_name', 'Ishani'), ('last_name', 'Parekh'), ('relation', 'Single')])
+You are successfully logged in
+
+Welcome hetaswi !!
+Your profile is successfully saved!
+Your Profile details!!
+OrderedDict([('age', '23'), ('first_name', 'Hetaswi'), ('last_name', 'Vankani'), ('relation', 'Single')])
+You are successfully logged in
+
+Welconme  mohit  !!
+Following is the list of friends you currently have:-
+mohit
+You are successfully logged in
+
+Welconme  kedar  !!
+Following is the list of friends you currently have:-
+kedar
+mohit
+You are successfully logged in
+
+Welconme  maullik  !!
+Following is the list of friends you currently have:-
+maullik
+mohit
+You are successfully logged in
+
+Welconme  nikhil  !!
+Following is the list of friends you currently have:-
+kedar
+maullik
+nikhil
+You are successfully logged in
+
+Welconme  naman  !!
+Following is the list of friends you currently have:-
+naman
+You are successfully logged in
+
+Welconme  ishani  !!
+Following is the list of friends you currently have:-
+ishani
+naman
+You are successfully logged in
+
+Welconme  hetaswi  !!
+Following is the list of friends you currently have:-
+hetaswi
+ishani
+naman
+You are successfully logged in
+
+Following post: first successfully posted on all friends wall
+Following post: seoncd successfully posted on all friends wall
+You are successfully logged in
+
+Following post: hello everybody successfully posted on all friends wall
+Following post: hi how are you successfully posted on all friends wall
+You are successfully logged in
+
+Following post: i am maullik successfully posted on all friends wall
+Following post: my friends i like successfully posted on all friends wall
+You are successfully logged in
+
+Following post: hell is here successfully posted on all friends wall
+Following post: god bless you successfully posted on all friends wall
+You are successfully logged in
+
+Following post: philosphy successfully posted on all friends wall
+Following post: my asd successfully posted on all friends wall
+You are successfully logged in
+
+Following post: hellogs successfully posted on all friends wall
+Following post: porty successfully posted on all friends wall
+You are successfully logged in
+
+Following post: toeier successfully posted on all friends wall
+Following post: jai shree shyam successfully posted on all friends wall
+You are successfully logged in
+
+Hello mohit!!!
+1) mohit posted: first
+2) mohit posted: seoncd
+3) kedar posted: hi how are you
+4) maullik posted: i am maullik
+5) kedar posted: hello everybody
+6) maullik posted: my friends i like
+You are successfully logged in
+
+Hello kedar!!!
+1) mohit posted: first
+2) nikhil posted: hell is here
+3) mohit posted: seoncd
+4) kedar posted: hi how are you
+5) nikhil posted: god bless you
+6) kedar posted: hello everybody
+You are successfully logged in
+
+Hello maullik!!!
+1) mohit posted: first
+2) nikhil posted: hell is here
+3) mohit posted: seoncd
+4) maullik posted: i am maullik
+5) nikhil posted: god bless you
+6) maullik posted: my friends i like
+You are successfully logged in
+
+Hello nikhil!!!
+1) nikhil posted: hell is here
+2) kedar posted: hi how are you
+3) maullik posted: i am maullik
+4) nikhil posted: god bless you
+5) kedar posted: hello everybody
+6) maullik posted: my friends i like
+You are successfully logged in
+
+Hello naman!!!
+1) hetaswi posted: toeier
+2) ishani posted: hellogs
+3) hetaswi posted: jai shree shyam
+4) naman posted: my asd
+5) ishani posted: porty
+6) naman posted: philosphy
+You are successfully logged in
+
+Hello ishani!!!
+1) hetaswi posted: toeier
+2) ishani posted: hellogs
+3) hetaswi posted: jai shree shyam
+4) naman posted: my asd
+5) ishani posted: porty
+6) naman posted: philosphy
+You are successfully logged in
+
+Hello hetaswi!!!
+1) hetaswi posted: toeier
+2) ishani posted: hellogs
+3) hetaswi posted: jai shree shyam
+4) naman posted: my asd
+5) ishani posted: porty
+6) naman posted: philosphy
+You are successfully logged in
+
+Hello mohit ,please select a post to comment!!
+1) mohit posted: first
+2) mohit posted: seoncd
+3) kedar posted: hi how are you
+4) maullik posted: i am maullik
+5) kedar posted: hello everybody
+6) maullik posted: my friends i like
+Comment: seosdawencd added
+You are successfully logged in
+
+Hello kedar ,please select a post to comment!!
+1) mohit posted: first
+	user: mohit commented: seosdawencd
+2) nikhil posted: hell is here
+3) mohit posted: seoncd
+4) kedar posted: hi how are you
+5) nikhil posted: god bless you
+6) kedar posted: hello everybody
+Comment: comment2 added
+You are successfully logged in
+
+Hello maullik ,please select a post to comment!!
+1) mohit posted: first
+	user: mohit commented: seosdawencd
+2) nikhil posted: hell is here
+	user: kedar commented: comment2
+3) mohit posted: seoncd
+4) maullik posted: i am maullik
+5) nikhil posted: god bless you
+6) maullik posted: my friends i like
+Comment: comment3 added
+You are successfully logged in
+
+Hello nikhil ,please select a post to comment!!
+1) nikhil posted: hell is here
+	user: kedar commented: comment2
+2) kedar posted: hi how are you
+3) maullik posted: i am maullik
+4) nikhil posted: god bless you
+5) kedar posted: hello everybody
+6) maullik posted: my friends i like
+Comment: comment4:hell is here added
+You are successfully logged in
+
+Hello naman ,please select a post to comment!!
+1) hetaswi posted: toeier
+2) ishani posted: hellogs
+3) hetaswi posted: jai shree shyam
+4) naman posted: my asd
+5) ishani posted: porty
+6) naman posted: philosphy
+Comment: may god does this added
+You are successfully logged in
+
+Hello ishani ,please select a post to comment!!
+1) hetaswi posted: toeier
+2) ishani posted: hellogs
+3) hetaswi posted: jai shree shyam
+4) naman posted: my asd
+5) ishani posted: porty
+	user: naman commented: may god does this
+6) naman posted: philosphy
+Comment: dogs are cute added
+You are successfully logged in
+
+Hello hetaswi ,please select a post to comment!!
+1) hetaswi posted: toeier
+2) ishani posted: hellogs
+3) hetaswi posted: jai shree shyam
+4) naman posted: my asd
+5) ishani posted: porty
+	user: naman commented: may god does this
+6) naman posted: philosphy
+	user: ishani commented: dogs are cute
+Comment: comment last added
