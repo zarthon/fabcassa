@@ -19,13 +19,13 @@ def test_insert():
         main.insert_new(usern = user,passw = sample_data[user])
 
 def test_profile():
-    for i in range(1,len(sample_username)):
+    for i in range(0,len(sample_username)):
         username = sample_username[i]
         main.authenticate(username,sample_data[username])
         main.modifyUserProfile(first_name=sample_user_profile[username][0], last_name=sample_user_profile[username][1], age=sample_user_profile[username][2],relation=sample_user_profile[username][3])
         main.viewProfile()
 def test_friends():
-    for i in range(1,len(sample_username)):
+    for i in range(0,len(sample_username)):
         username = sample_username[i]
         main.authenticate(username,sample_data[username])
         for friend in sample_friends[username]:
@@ -33,13 +33,13 @@ def test_friends():
         main.viewFriends()
 
 def test_posts():
-    for i in range(1,len(sample_username)):
+    for i in range(0,len(sample_username)):
         username = sample_username[i]
         main.authenticate(username,sample_data[username])
         for post in sample_posts[username]:
             main.postNew(body=post)
 def test_viewPost():
-    for i in range(1,len(sample_username)):
+    for i in range(0,len(sample_username)):
         username = sample_username[i]
         main.authenticate(username,sample_data[username])
         main.viewPosts()
