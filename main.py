@@ -89,6 +89,7 @@ def insert_new(usern=None,passw=None):
             FRIENDS.insert(username,{COL_FRND[0]:{username:user_id} })
             USERS.insert(user_id,{COL_USERS[0]:user_id, COL_USERS[1]:username, COL_USERS[2]:password})
             USERNAME.insert(username,{COL_USERNA[0]:user_id })
+            print 'username:'+username+'user_id: '+user_id
             MAPWALL.insert(username,{COL_MAPWALL[0]:{'sample':str(time.time())}})
             print "User with username ",username," successfully created\n"
     except:
@@ -193,7 +194,7 @@ def postNew(body=None):
         authenticate()
     else:
         if body is None:
-            body = str(raw_input("Enter the body of post"))
+            body = str(raw_input("Enter the body of post: "))
 
         wallid = str(uuid.uuid4())
         timestamp = str(time.time())
@@ -221,15 +222,15 @@ def viewPosts():
         print "User is not Logged in !!"
         authenticate()
     else:
+        print "Hello "+LOGED_USER['username']+"!!!"
         wallist_row = MAPWALL.get(LOGED_USER['username'])
         wallposts = wallist_row[COL_MAPWALL[0]]
         print wallposts
         for postid in wallposts:
-            print postid
             if postid == 'sample':
-                continue;
+                continue
             actual_post = WALLPOST.get(postid)
-            print actual_post
+            print actual_post['body']
 
 
 def postComment():
@@ -252,9 +253,9 @@ def viewComments():
 
 def main():
     print "Welcome to Sample facassa!!!\n"
-    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Exit the APP"
+    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Exit the APP"
     option = int(raw_input("Please select an Option:"))
-    while option != 7:
+    while option != 9:
         if option == 1:
             insert_new()
         elif option == 2:
@@ -264,10 +265,14 @@ def main():
         elif option == 4:
             viewProfile()
         elif option == 5:
-            postNew()
+            addFriends() 
         elif option == 6:
+            viewFriends()
+        elif option == 7:
+            postNew()
+        elif option == 8:
             viewPosts()
-        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Exit the APP"
+        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Exit the APP"
         option = int(raw_input("Please select an Option:"))
 
 if __name__ == "__main__":

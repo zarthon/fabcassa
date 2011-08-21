@@ -23,7 +23,7 @@ def test_profile():
         username = sample_username[i]
         main.authenticate(username,sample_data[username])
         main.modifyUserProfile(first_name=sample_user_profile[username][0], last_name=sample_user_profile[username][1], age=sample_user_profile[username][2],relation=sample_user_profile[username][3])
-
+        main.viewProfile()
 def test_friends():
     for i in range(1,len(sample_username)):
         username = sample_username[i]
