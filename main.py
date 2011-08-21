@@ -215,7 +215,6 @@ def postNew(body=None):
 
 #Show all the posts 
 def postComment(post_no=None,body=None):
-    print body,post_no
     global LOGED_USER
 
     if LOGED_USER is None:
@@ -224,11 +223,9 @@ def postComment(post_no=None,body=None):
     else:
         #Get list of friends wall post
         post_id = viewPosts(coment_flag=True,option=post_no)
-        print post_id
         comment_id = str(uuid.uuid4())
         if body is None:
             body = str(raw_input("Enter you comment: "))
-        print body
         timestamp = str(time.time())
         try:
             COMMENT.insert(comment_id,{COL_COMMENT[0]:comment_id,COL_COMMENT[1]:LOGED_USER['id'],COL_COMMENT[2]:body,COL_COMMENT[3]:timestamp})
@@ -236,14 +233,11 @@ def postComment(post_no=None,body=None):
             curent_coment_list[comment_id] = LOGED_USER['username']
             MAPCOMMENT.insert(postid,{COL_MAPCOMMENT[0]:curent_coment_list})
         except:
-            print sys.exc_info()
-            print post_id
             MAPCOMMENT.insert(post_id,{COL_MAPCOMMENT[0]:{comment_id:LOGED_USER['username']}})
             print "Comment: "+body+" added"
 
 def viewPosts(coment_flag=False,option=None):
     global LOGED_USER
-    print coment_flag,option
     if LOGED_USER is None:
         print "User is not Logged in !!"
         authenticate()
@@ -268,11 +262,8 @@ def viewPosts(coment_flag=False,option=None):
             print str(counter) +") "+ post_user['username'] + " posted: " + actual_post['body']
             counter += 1
             try:
-                #print postid
                 coment_row = MAPCOMMENT.get(postid)
-                #print coment_row
                 coment_list = coment_row[COL_MAPCOMMENT[0]]
-                #print coment_list
                 for comentid in coment_list:
                     comment = COMMENT.get(comentid)
                     print "\tuser: "+USERS.get(comment['user_id'])['username']+" commented: "+comment['body']
@@ -299,9 +290,9 @@ def viewComments():
 
 def main():
     print "Welcome to Sample facassa!!!\n"
-    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Post Comment\n10)View Posts with comment\n11)Exit the APP"
+    print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Post Comment\n10)Exit the APP"
     option = int(raw_input("Please select an Option:"))
-    while option != 11:
+    while option != 10:
         if option == 1:
             insert_new()
         elif option == 2:
@@ -320,9 +311,8 @@ def main():
             viewPosts()
         elif option == 9:
             postComment()
-        elif option ==10:
-            viewPostwithComent()
-        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Post Comment\n10)View Posts with comment\n11)Exit the APP"
+    
+        print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Post Comment\n10)Exit the APP"
         option = int(raw_input("Please select an Option:"))
 
 if __name__ == "__main__":
