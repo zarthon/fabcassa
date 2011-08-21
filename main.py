@@ -214,7 +214,8 @@ def postNew(body=None):
             print "Following post: "+ body + " successfully posted on all friends wall"
 
 #Show all the posts 
-def postComment(body=None,post_no=None):
+def postComment(post_no=None,body=None):
+    print body,post_no
     global LOGED_USER
 
     if LOGED_USER is None:
@@ -227,6 +228,7 @@ def postComment(body=None,post_no=None):
         comment_id = str(uuid.uuid4())
         if body is None:
             body = str(raw_input("Enter you comment: "))
+        print body
         timestamp = str(time.time())
         try:
             COMMENT.insert(comment_id,{COL_COMMENT[0]:comment_id,COL_COMMENT[1]:LOGED_USER['id'],COL_COMMENT[2]:body,COL_COMMENT[3]:timestamp})
@@ -241,7 +243,7 @@ def postComment(body=None,post_no=None):
 
 def viewPosts(coment_flag=False,option=None):
     global LOGED_USER
-
+    print coment_flag,option
     if LOGED_USER is None:
         print "User is not Logged in !!"
         authenticate()
@@ -250,45 +252,43 @@ def viewPosts(coment_flag=False,option=None):
             print "Hello "+LOGED_USER['username']+"!!!"
         else:
             print "Hello "+LOGED_USER['username']+" ,please select a post to comment!!"
-        coment_avail = True
-        try:
-            wallist_row = MAPWALL.get(LOGED_USER['username'])
-            wallposts = wallist_row[COL_MAPWALL[0]]
-        except:
-            coment_avail = False
+
+        wallist_row = MAPWALL.get(LOGED_USER['username'])
+        wallposts = wallist_row[COL_MAPWALL[0]]
 
         counter = 1
         map_id = {}
         for postid in wallposts:
             if postid == 'sample':
                 continue
-            if coment_flag and coment_avail:
+            if coment_flag:
                 map_id[counter] = postid
             actual_post = WALLPOST.get(postid)
             post_user = USERS.get(actual_post['user_id'])
             print str(counter) +") "+ post_user['username'] + " posted: " + actual_post['body']
             counter += 1
             try:
+                #print postid
                 coment_row = MAPCOMMENT.get(postid)
+                #print coment_row
                 coment_list = coment_row[COL_MAPCOMMENT[0]]
+                #print coment_list
                 for comentid in coment_list:
                     comment = COMMENT.get(comentid)
                     print "\tuser: "+USERS.get(comment['user_id'])['username']+" commented: "+comment['body']
             except:
                 pass
-        if coment_flag and coment_avail:
+        if coment_flag:
             if option is None:
                 post = int(raw_input("Select a post: "))
             else:
                 post = option
             if post>counter or post<=0:
                 print "Select correct post number"
-                return viewPosts(coment_flag=True,option=post)
+                return None
             else:
                 return map_id[post]
-    
-        return
-
+        return None
 
 #Insert the comment in to COMMENTS as well as MAPCOMMENT
 

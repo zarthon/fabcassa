@@ -55,8 +55,10 @@ def test_postcomment():
 
 if __name__=="__main__":
     main.init()
-    test_insert()
-    test_profile()
-    test_friends()
-    test_posts()
-    test_viewPost()
+    #test_insert()
+    #test_profile()
+    #test_friends()
+    #test_posts()
+    #test_viewPost()
+    main.authenticate('mohit','asda')
+    main.postComment(2,'sample automated cmment')
