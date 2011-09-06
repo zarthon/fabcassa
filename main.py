@@ -289,7 +289,7 @@ def viewComments():
     pass
 
 def main():
-    print "Welcome to Sample facassa!!!\n"
+    print "Welcome to Sample facassa!!!:- This is a sample cassandra based program\n"
     print "1)Register New User\n2)Log In\n3)Modify User Profile\n4)View Your Profile\n5)Add Friends\n6)View your Friends\n7)Post on Wall\n8)View Posts on your wall\n9)Post Comment\n10)Exit the APP"
     option = int(raw_input("Please select an Option:"))
     while option != 10:
